@@ -19,9 +19,9 @@ print("Para Birimleri: CAD, HKD, ISK, PHP, DKK, HUF, CZK, GBP, RON, SEK, IDR"
 while True:
     api_url = "https://api.exchangeratesapi.io/latest?base="
 
-    doviz_boz = input("Bozmak istediğiniz döviz türü: ")
-    doviz_alinan = input("Almak istediğiniz döviz türü: ")
-    miktar = int(input("Ne kadar {} bozdurmak istiyorsunuz: ".format(doviz_boz)))
+    doviz_boz = input("Bozmak istediğiniz döviz türü: \n")
+    doviz_alinan = input("Almak istediğiniz döviz türü: \n")
+    miktar = int(input("Ne kadar {} bozdurmak istiyorsunuz: \n".format(doviz_boz)))
 
     if doviz_boz == "q" or doviz_alinan == "q":
         print("Programdan çıkılıyor...")
@@ -33,9 +33,9 @@ while True:
 
         sonuc = json.loads(sonuc.text) # Siteye gidrek json verilerini text verisine döndürür.
 
-        print("1 {} = {} {}".format(doviz_boz, sonuc["rates"][doviz_alinan], doviz_alinan)) # 1 olarak burada 1 Bozdurmak istediğiniz döviz türü almak istediğiniz dövüz türüne eşit anlamında yazamaktadır.
+        print("1 {} = {} {}\n".format(doviz_boz, sonuc["rates"][doviz_alinan], doviz_alinan)) # 1 olarak burada 1 Bozdurmak istediğiniz döviz türü almak istediğiniz dövüz türüne eşit anlamında yazamaktadır.
 
-        print("{} {} = {} {}".format(miktar, doviz_boz, miktar * sonuc["rates"][doviz_alinan], doviz_alinan)) #Genel hesaplama yaparak bizlere dövizin dönüşmüş halini yazar.
+        print("{} {} = {} {}\n".format(miktar, doviz_boz, miktar * sonuc["rates"][doviz_alinan], doviz_alinan)) #Genel hesaplama yaparak bizlere dövizin dönüşmüş halini yazar.
 
 
 
