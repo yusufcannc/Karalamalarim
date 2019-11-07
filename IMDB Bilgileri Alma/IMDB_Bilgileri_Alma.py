@@ -1,6 +1,10 @@
 from bs4 import BeautifulSoup
 import requests
 
+print("-"*30)
+print("IMDB En İyi Filmler Bölümünde ki Bütün Filmler")
+print("-"*30)
+
 url = "https://www.imdb.com/chart/top?ref_=nv_mv_250"
 
 html = requests.get(url).content
