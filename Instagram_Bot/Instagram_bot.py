@@ -3,15 +3,16 @@ import time
 from selenium.webdriver.common.keys import Keys
 
 
-user_name = input("Kullanıcı adını giriniz: ")
-password = input("Şifrenizi giriniz: ")
 
 class Instagram:
     def __init__(self,user_name,password):
 
-        self.browser = webdriver.Chrome()
         self.user_name = user_name
         self.password = password
+        self.browserProfile = webdriver.ChromeOptions() #Bu ve altında ki özellikler ile tarayıcımız ingilizce olarak açılacaktır.
+        self.browserProfile.add_experimental_option('prefs', {'intl.accept_languages':'en,en_US'})
+        self.browser = webdriver.Chrome("chromedriver.exe", chrome_options=self.browserProfile)
+
 
     def signIn(self):
         self.browser.get("https://www.instagram.com/accounts/login/")
@@ -62,11 +63,69 @@ class Instagram:
             print(link)
 
 
+    def followUser(self,username):
+        self.browser.get("https://instagram.com/"+username) #Bu fonksiyon da ise instagram/username'e gitmektedir.
+        time.sleep(2)
+
+        self.follow_button = self.browser.find_element_by_tag_name("button") #Butonun Html bilgisi button olduğu için ve sadece bir adet buton olduğu için direk button yazdım.
+        if self.follow_button.text != "Following":#Eğer takiptesin yazmıyorsa "Takip Et" butonuna tıklayacaktır.
+            self.follow_button.click()
+            time.sleep(2)
+        else:
+            print("Kullanıcıyı zaten takip ediyorsunuz.")
+
+
+    def unfollowUser(self,username):
+        self.browser.get("https://instagram.com/"+username)
+        time.sleep(2)
+        self.follow_button = self.browser.find_element_by_tag_name("button")
+        if self.follow_button.text == "Following":
+            self.follow_button.click()
+            time.sleep(2)
+            self.browser.find_element_by_xpath('//button[text()="Unfollow"]').click()
+            print(f"Artık {username}'i takip etmiyorsunuz.")
+        else:
+            print("Zaten takip etmiyorsunuz.")
+
+
+print("-" * 30)
+print("Instagram Bot'a Hoş Geldiniz! ")
+print("-" * 30)
+
+print("-" * 35)
+print(""""1- Takipçileri göster.
+2- Takipten Çık
+3- Takip Et""")
+print("-" * 35)
+
+user_name = input("Kullanıcı adını giriniz: ")
+password = input("Şifrenizi giriniz: ")
+instgram = Instagram(user_name, password)
+
+while True:
+
+
+
+    if user_name and password != "":
+        instgram.signIn()
+
+    deger = input("Hangi değeri seçmek istersiniz: ")
+
+    if deger == "1":
+        instgram.getFollowers()
+    elif deger == "2":
+        kullanici = input("Hangi kullanıcıyı takipten çıkacaksınız: ")
+        instgram.unfollowUser(kullanici)
+    elif deger == "3":
+        kullanici_ekle = input("Hangi kullanıcıyı takip edeceksiniz: ")
+        instgram.followUser(kullanici_ekle)
 
 
 
 
-instgram = Instagram(user_name,password)
-instgram.signIn()
-instgram.getFollowers()
+
+
+
+
+
 
