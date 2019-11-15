@@ -1,8 +1,4 @@
 from selenium import webdriver
-import time
-import random
-import sys
-
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.keys import Keys
 
@@ -19,11 +15,8 @@ class Instagram:
 
 
     def signIn(self):
-        print("burdayım1")
         self.browser.get("https://www.instagram.com/accounts/login/")
-        print("burdayım2")
         self.browser.implicitly_wait(15)
-        print("burdayım3")
         userInput = self.browser.find_element_by_xpath(
             "//*[@id='react-root']/section/main/div/article/div/div[1]/div/form/div[2]/div/label/input")
         passwordInput = self.browser.find_element_by_xpath(
@@ -38,7 +31,6 @@ class Instagram:
         except:
             pass
         self.browser.implicitly_wait(10)
-        print("burdayım4")
     def getFollowers(self):
         self.browser.get(f"https://www.instagram.com/{self.user_name}")  # başta ki soruda ki veriye göre giriş yapacak
         self.browser.implicitly_wait(10)
@@ -46,10 +38,8 @@ class Instagram:
             "//*[@id='react-root']/section/main/div/header/section/ul/li[2]/a").click()  # Profilde ki takipçi sayısı kısmına tıklayacak
         self.browser.implicitly_wait(10)
 
-        dialog = self.browser.find_element_by_css_selector(
-            "div[role=dialog] ul")  # Bunun sayesinde takipçi ekranına geleceğiz.
-        followersCount = len(
-            dialog.find_elements_by_css_selector("li"))  # Bunun sayesinde takipçilerin nicklerine erişeceğiz.
+        dialog = self.browser.find_element_by_css_selector("div[role=dialog] ul")  # Bunun sayesinde takipçi ekranına geleceğiz.
+        followersCount = len(dialog.find_elements_by_css_selector("li"))  # Bunun sayesinde takipçilerin nicklerine erişeceğiz.
 
         print(f"Şu anda {followersCount} takipçi var.")  # Ekran da şu anda kaç takipçinin olduğunu gösteriyor.
 
@@ -57,16 +47,15 @@ class Instagram:
 
         while True:
             dialog.click()  # Burada dialog ile takipçi penceresine bir kere tıklayacak ki Space tuşunu algılayabilsin.
-            self.action.key_down(Keys.SPACE).key_up(
-                Keys.SPACE).perform()  # key_down(Keys.SPACE) ile scroll aşağıya inecek ve up metodu ile de yukarıya çıkacak
-            time.sleep(2)
+            self.action.key_down(Keys.SPACE).key_up(Keys.SPACE).perform()  # key_down(Keys.SPACE) ile scroll aşağıya inecek ve up metodu ile de yukarıya çıkacak
+            self.browser.implicitly_wait(15)
 
             newCount = len(dialog.find_elements_by_css_selector("li"))
 
             if followersCount != newCount:  # followersCount newCount'a eşit değilse scroll aşağıya inmeye devam etsin.
                 followersCount = newCount
                 print(f"Toplam takipçi {newCount}")
-                time.sleep(1)
+                self.browser.implicitly_wait(15)
             else:  # Eşitlenirse de bu döngüden çıkılsın.
                 break
 
@@ -92,25 +81,23 @@ class Instagram:
     def unfollowUser(self, username):
 
         self.browser.get("https://instagram.com/" + username)
-        time.sleep(2)
+        self.browser.implicitly_wait(15)
         self.follow_button = self.browser.find_element_by_tag_name("button")
         if self.follow_button.text == "Following":
             self.follow_button.click()
-            time.sleep(2)
+            self.browser.implicitly_wait(15)
             self.browser.find_element_by_xpath('//button[text()="Unfollow"]').click()
             print(f"Artık {username}'i takip etmiyorsunuz.")
         else:
             print("Zaten takip etmiyorsunuz.")
 
-    def likephoto(self, hashtag,href, photo_href):
-        pass
 
 print("-" * 30)
 print("Instagram Bot'a Hoş Geldiniz! ")
 print("-" * 30)
 
 print("-" * 35)
-print(""""1- Takipçileri göster.
+print("""1- Takipçileri göster.
 2- Takipten Çık
 3- Takip Et""")
 print("-" * 35)
